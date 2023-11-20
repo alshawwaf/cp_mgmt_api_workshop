@@ -1,0 +1,21 @@
+#!/bin/bash
+#
+# Script to setup the Mgmt Server for the HOL and Training Enviroment 
+#
+echo "Logging into the Management API Server"
+SESSIONID=`mgmt_cli -r true login domain "System Data" -f json |jq -r '.sid'`
+echo "SESSIONID $SESSIONID"
+echo "Set R81.20 API to accept all ip addresses"
+mgmt_cli set api-settings accepted-api-calls-from "All IP addresses" --domain 'System Data' --session-id $SESSIONID
+echo "Add user api_user with password Cpwins!1"
+mgmt_cli add administrator name "api_user" password "Cpwins!1" must-change-password false authentication-method "INTERNAL_PASSWORD" permissions-profile "Super User" --domain 'System Data' --session-id $SESSIONID
+echo "Publising User Changes"
+mgmt_cli publish --session-id $SESSIONID
+echo "Logging out of API"
+mgmt_cli logout --session-id $SESSIONID
+#echo "Set IPS enabled for gw_r8120"
+#mgmt_cli -r true set-simple-gateway name gw_r8120 ips true application-control true firewall true url-filtering true
+echo "Applying new API Server settings"
+api reconf
+echo "API Status"
+api status
