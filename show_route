@@ -1,0 +1,1 @@
+mgmt_cli -r true run-script script-name "showRoutes" script "clish -c 'show route'" targets.1 "gw_r8120" -f json |jq '.tasks[]."task-details"[].responseMessage' | base64 --decode -i
