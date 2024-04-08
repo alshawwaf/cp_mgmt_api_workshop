@@ -1,5 +1,4 @@
 #!/bin/bash
-#
 # Script to setup the Mgmt Server for the HOL and Training Enviroment 
 #
 echo "Logging into the Management API Server"
@@ -19,3 +18,5 @@ echo "Applying new API Server settings"
 api reconf
 echo "API Status"
 api status
+
+# you can also use root user, use: mgmt_cli -r true --domain "System Data" set api-settings accepted-api-calls-from "all ip addresses" && api reconf
